@@ -63,15 +63,15 @@
             line-height: 1.5;
         }
 
-        /* إطار كتابة الاسم (ستايل ريترو يشبه الهواتف القديمة وموزع كالبحث) */
+        /* إطار كتابة الاسم المعدل: شفاف ويأخذ لون ما تحته والحدود والنص بالأسود */
         .name-input {
             width: 90%;
             max-width: 280px;
             padding: 12px 15px;
             font-size: 1.1rem;
-            border: 3px solid #000;
-            background-color: #fff;
-            color: #000;
+            border: 3px solid #000; /* إطار أسود عريض */
+            background-color: transparent; /* خلفية شفافة تأخذ اللون البرتقالي المار تحتها */
+            color: #000; /* الكتابة بالأسود */
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
@@ -148,7 +148,12 @@
 
     <div class="phone-container" id="phone">
         <div class="screen-content" id="screen">
+            <h2>اكتبي اسمك لي مديتهلك . بسكو هاد السيت درتهلك ليك!</h2>
+            <input type="text" id="nameField" class="name-input" placeholder="اكتب هنا..." autocomplete="off">
+            <div class="btn-container">
+                <button class="game-btn" onclick="startAction()">صايي كتبت</button>
             </div>
+        </div>
     </div>
 
     <div class="cinematic-overlay" id="videoOverlay">
@@ -159,93 +164,38 @@
     </div>
 
     <script>
-        let userName = "";
-        let currentStep = 0;
+        // إيقاف مفعول حركات اللمس غير المرغوبة في صندوق الكتابة
+        document.getElementById('nameField').addEventListener('touchstart', (e) => e.stopPropagation());
 
-        const screen = document.getElementById('screen');
-        const phone = document.getElementById('phone');
-        const videoOverlay = document.getElementById('videoOverlay');
-        const giftVideo = document.getElementById('giftVideo');
-
-        // دالة بدء الخطوة الأولى (طلب الاسم)
-        function startGame() {
-            screen.innerHTML = `
-                <h2>اكتبي اسمك لي مديتهلك . بسكو هاد السيت درتهلك ليك!</h2>
-                <input type="text" id="nameField" class="name-input" placeholder="اكتب هنا..." autocomplete="off">
-                <div class="btn-container">
-                    <button class="game-btn" onclick="saveName()">تأكيد دير هادي</button>
-                </div>
-            `;
-            
-            // السماح بالكتابة داخل مربع النص دون مشاكل اللمس
+        function startAction() {
             const input = document.getElementById('nameField');
-            input.addEventListener('touchstart', (e) => e.stopPropagation());
-        }
-
-        // حفظ الاسم والانتقال للأسئلة المخصصة
-        function saveName() {
-            const input = document.getElementById('nameField');
-            userName = input.value.trim();
+            const userName = input.value.trim();
             
             if (userName === "") {
                 alert("من فضلك اكتب اسمك أولاً لتبدأ اللعبة!");
                 return;
             }
             
-            currentStep = 0;
-            loadStep();
-        }
+            const screen = document.getElementById('screen');
+            const phone = document.getElementById('phone');
+            const videoOverlay = document.getElementById('videoOverlay');
+            const giftVideo = document.getElementById('giftVideo');
 
-        // دالة عرض الأسئلة اللاحقة
-        function loadStep() {
-            // هنا نحدد الأسئلة التي تظهر بعد كتابة الاسم
-            const gameData = [
-                {
-                    question: `يا ترى يا ${userName}، هل تظن أنك مستعد للمفاجأة السينمائية الضخمة الآن؟`,
-                    answers: ["نعم، أتحداك!", "خايف شوية 🫣"]
-                },
-                {
-                    question: "السؤال الحاسم والأخير.. هل تعدني ألا تضحك بصوت عالٍ على الفيديو؟",
-                    answers: ["أعدك بالتأكيد 🔥", "مارانيش ضامن روحي 🤣"]
-                }
-            ];
-
-            if (currentStep < gameData.length) {
-                let data = gameData[currentStep];
-                let html = `<h2>${data.question}</h2><div class="btn-container">`;
-                
-                data.answers.forEach(ans => {
-                    html += `<button class="game-btn" onclick="nextStep()">${ans}</button>`;
-                });
-                
-                html += `</div>`;
-                screen.innerHTML = html;
-            } else {
-                startCinematicTransition();
-            }
-        }
-
-        function nextStep() {
-            currentStep++;
-            loadStep();
-        }
-
-        // الهزة الدرامية والانتقال للفيديو
-        function startCinematicTransition() {
+            // إخفاء النص وصندوق الإدخال فوراً وعرض رسالة المعالجة مع الاسم
             screen.innerHTML = `<h2>جاري تحميل المفاجأة الكبرى يا ${userName}...</h2>`;
+            
+            // تشغيل الاهتزاز السينمائي المثير
             phone.classList.add('shaking');
             
+            // الانتقال المباشر للفيديو بكامل الشاشة بعد ثانيتين
             setTimeout(() => {
                 phone.classList.remove('shaking');
                 videoOverlay.style.display = 'flex';
                 giftVideo.play().catch(error => {
-                    console.log("التشغيل التلقائي مدعوم بعد تفاعل المستخدم.");
+                    console.log("التشغيل التلقائي يبدأ فوراً بعد ضغط الزر.");
                 });
-            }, 2200);
+            }, 2000);
         }
-
-        // تشغيل واجهة إدخال الاسم فور فتح الموقع
-        window.onload = startGame;
     </script>
 </body>
 </html>
