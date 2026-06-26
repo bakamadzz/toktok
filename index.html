@@ -27,9 +27,9 @@
         .phone-container {
             width: 100vw;
             height: 100vh;
-            max-width: 450px; /* ليحافظ على شكل الهاتف حتى لو فُتح من كمبيوتر */
+            max-width: 450px;
             max-height: 850px;
-            background-image: url('2117274988566708992.jpeg'); /* تم التعديل إلى الصيغة والاسم الجديدين */
+            background-image: url('2117274988566708992.jpeg');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -43,7 +43,7 @@
         /* منطقة المحتوى داخل الشاشة البرتقالية المحمية */
         .screen-content {
             position: absolute;
-            width: 76%; /* الأبعاد التقريبية لتناسب الشاشة البرتقالية بالداخل */
+            width: 76%;
             height: 70%;
             top: 14%;
             display: flex;
@@ -52,24 +52,43 @@
             align-items: center;
             text-align: center;
             padding: 15px;
-            color: #000; /* نصوص سوداء لتظهر على الخلفية البرتقالية */
+            color: #000;
             z-index: 2;
         }
 
         h2 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        /* أزرار اللعبة الطريفة */
+        /* إطار كتابة الاسم (ستايل ريترو يشبه الهواتف القديمة وموزع كالبحث) */
+        .name-input {
+            width: 90%;
+            max-width: 280px;
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            border: 3px solid #000;
+            background-color: #fff;
+            color: #000;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* حاويات الأزرار */
         .btn-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
             width: 100%;
+            max-width: 280px;
         }
+        
         .game-btn {
             background-color: #000;
             color: #ff9900;
@@ -85,7 +104,7 @@
             transform: scale(0.95);
         }
 
-        /* التأثير السينمائي والدرامي عند الانتقال للفيديو */
+        /* التأثير السينمائي عند الانتقال للفيديو */
         .cinematic-overlay {
             position: fixed;
             top: 0;
@@ -105,7 +124,7 @@
             object-fit: contain;
         }
 
-        /* تأثير اهتزاز الشاشة الدرامي */
+        /* تأثير اهتزاز الشاشة */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -127,14 +146,11 @@
 </head>
 <body>
 
-    <!-- جسم الهاتف والشاشة -->
     <div class="phone-container" id="phone">
         <div class="screen-content" id="screen">
-            <!-- سيتم تغيير المحتوى هنا بواسطة الجافاسكريبت -->
-        </div>
+            </div>
     </div>
 
-    <!-- الشاشة السينمائية المخفية الخاصة بالفيديو -->
     <div class="cinematic-overlay" id="videoOverlay">
         <video id="giftVideo" controls playsinline>
             <source src="gift_video.mp4" type="video/mp4">
@@ -143,22 +159,7 @@
     </div>
 
     <script>
-        // مصفوفة الأسئلة والخيارات والسيناريو
-        const gameData = [
-            {
-                question: "مرحباً بك في اللعبة السرية! هل أنت مستعد لما ينتظرك؟",
-                answers: ["نعم، طبعاً!", "لا، خائف قليلاً"]
-            },
-            {
-                question: "حسناً.. سؤال للأذكياء فقط: هل تظن أنك ستفوز بهذه الجائزة؟",
-                answers: ["أنا عبقري وسأفوز", "أريد الفيديو فوراً!"]
-            },
-            {
-                question: "السؤال الأخير والحاسم.. هل تعدني ألا تضحك بصوت عالٍ؟",
-                answers: ["أعدك! 🔥", "لا أضمن نفسي 🤣"]
-            }
-        ];
-
+        let userName = "";
         let currentStep = 0;
 
         const screen = document.getElementById('screen');
@@ -166,8 +167,49 @@
         const videoOverlay = document.getElementById('videoOverlay');
         const giftVideo = document.getElementById('giftVideo');
 
-        // دالة لتحديث الشاشة وعرض السؤال الحالي
+        // دالة بدء الخطوة الأولى (طلب الاسم)
+        function startGame() {
+            screen.innerHTML = `
+                <h2>اكتبي اسمك لي مديتهلك . بسكو هاد السيت درتهلك ليك!</h2>
+                <input type="text" id="nameField" class="name-input" placeholder="اكتب هنا..." autocomplete="off">
+                <div class="btn-container">
+                    <button class="game-btn" onclick="saveName()">تأكيد دير هادي</button>
+                </div>
+            `;
+            
+            // السماح بالكتابة داخل مربع النص دون مشاكل اللمس
+            const input = document.getElementById('nameField');
+            input.addEventListener('touchstart', (e) => e.stopPropagation());
+        }
+
+        // حفظ الاسم والانتقال للأسئلة المخصصة
+        function saveName() {
+            const input = document.getElementById('nameField');
+            userName = input.value.trim();
+            
+            if (userName === "") {
+                alert("من فضلك اكتب اسمك أولاً لتبدأ اللعبة!");
+                return;
+            }
+            
+            currentStep = 0;
+            loadStep();
+        }
+
+        // دالة عرض الأسئلة اللاحقة
         function loadStep() {
+            // هنا نحدد الأسئلة التي تظهر بعد كتابة الاسم
+            const gameData = [
+                {
+                    question: `يا ترى يا ${userName}، هل تظن أنك مستعد للمفاجأة السينمائية الضخمة الآن؟`,
+                    answers: ["نعم، أتحداك!", "خايف شوية 🫣"]
+                },
+                {
+                    question: "السؤال الحاسم والأخير.. هل تعدني ألا تضحك بصوت عالٍ على الفيديو؟",
+                    answers: ["أعدك بالتأكيد 🔥", "مارانيش ضامن روحي 🤣"]
+                }
+            ];
+
             if (currentStep < gameData.length) {
                 let data = gameData[currentStep];
                 let html = `<h2>${data.question}</h2><div class="btn-container">`;
@@ -188,27 +230,22 @@
             loadStep();
         }
 
-        // الانتقال السينمائي والدرامي من اللعبة الطريفة إلى الفيديو
+        // الهزة الدرامية والانتقال للفيديو
         function startCinematicTransition() {
-            screen.innerHTML = "<h2>جاري معالجة الجائزة...</h2>";
-            
-            // 1. تشغيل اهتزاز الشاشة لإضافة طابع درامي
+            screen.innerHTML = `<h2>جاري تحميل المفاجأة الكبرى يا ${userName}...</h2>`;
             phone.classList.add('shaking');
             
-            // 2. بعد ثانيتين يتم الانتقال للفيديو السينمائي بكامل الشاشة
             setTimeout(() => {
                 phone.classList.remove('shaking');
                 videoOverlay.style.display = 'flex';
-                
-                // تشغيل الفيديو تلقائياً
                 giftVideo.play().catch(error => {
-                    console.log("التشغيل التلقائي يحتاج تفاعل مستخدم أولاً");
+                    console.log("التشغيل التلقائي مدعوم بعد تفاعل المستخدم.");
                 });
-            }, 2000);
+            }, 2200);
         }
 
-        // بدء اللعبة عند تحميل الصفحة
-        window.onload = loadStep;
+        // تشغيل واجهة إدخال الاسم فور فتح الموقع
+        window.onload = startGame;
     </script>
 </body>
 </html>
