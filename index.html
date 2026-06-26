@@ -29,7 +29,7 @@
             height: 100vh;
             max-width: 450px; /* ليحافظ على شكل الهاتف حتى لو فُتح من كمبيوتر */
             max-height: 850px;
-            background-image: url('image_e6d1e4.png'); /* اسم صورتك البرتقالية */
+            background-image: url('2117274988566708992.jpeg'); /* تم التعديل إلى الصيغة والاسم الجديدين */
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -57,9 +57,10 @@
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             font-weight: bold;
+            line-height: 1.4;
         }
 
         /* أزرار اللعبة الطريفة */
@@ -126,11 +127,14 @@
 </head>
 <body>
 
+    <!-- جسم الهاتف والشاشة -->
     <div class="phone-container" id="phone">
         <div class="screen-content" id="screen">
-            </div>
+            <!-- سيتم تغيير المحتوى هنا بواسطة الجافاسكريبت -->
+        </div>
     </div>
 
+    <!-- الشاشة السينمائية المخفية الخاصة بالفيديو -->
     <div class="cinematic-overlay" id="videoOverlay">
         <video id="giftVideo" controls playsinline>
             <source src="gift_video.mp4" type="video/mp4">
@@ -142,7 +146,7 @@
         // مصفوفة الأسئلة والخيارات والسيناريو
         const gameData = [
             {
-                question: "مرحباً بك في اللعبة السريية! هل أنت مستعد لما ينتظرك؟",
+                question: "مرحباً بك في اللعبة السرية! هل أنت مستعد لما ينتظرك؟",
                 answers: ["نعم، طبعاً!", "لا، خائف قليلاً"]
             },
             {
@@ -198,7 +202,7 @@
                 
                 // تشغيل الفيديو تلقائياً
                 giftVideo.play().catch(error => {
-                    console.log("التشغيل التلقائي يحتاج تفاعل مستخدم أولاً (تم حله بالضغط على الزر)");
+                    console.log("التشغيل التلقائي يحتاج تفاعل مستخدم أولاً");
                 });
             }, 2000);
         }
