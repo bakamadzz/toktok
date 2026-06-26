@@ -63,15 +63,15 @@
             line-height: 1.5;
         }
 
-        /* إطار كتابة الاسم المعدل: شفاف ويأخذ لون ما تحته والحدود والنص بالأسود */
+        /* إطار كتابة الاسم: شفاف، أسود من الحدود والكتابة */
         .name-input {
             width: 90%;
             max-width: 280px;
             padding: 12px 15px;
             font-size: 1.1rem;
-            border: 3px solid #000; /* إطار أسود عريض */
-            background-color: transparent; /* خلفية شفافة تأخذ اللون البرتقالي المار تحتها */
-            color: #000; /* الكتابة بالأسود */
+            border: 3px solid #000;
+            background-color: transparent;
+            color: #000;
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
@@ -151,7 +151,7 @@
             <h2>اكتبي اسمك لي مديتهلك . بسكو هاد السيت درتهلك ليك!</h2>
             <input type="text" id="nameField" class="name-input" placeholder="اكتب هنا..." autocomplete="off">
             <div class="btn-container">
-                <button class="game-btn" onclick="startAction()">صايي كتبت</button>
+                <button class="game-btn" onclick="goToQuestionTwo()">صايي كتبت</button>
             </div>
         </div>
     </div>
@@ -164,30 +164,40 @@
     </div>
 
     <script>
-        // إيقاف مفعول حركات اللمس غير المرغوبة في صندوق الكتابة
+        let userName = "";
+        const screen = document.getElementById('screen');
+        const phone = document.getElementById('phone');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const giftVideo = document.getElementById('giftVideo');
+
+        // منع تداخل حركات اللمس مع صندوق الكتابة
         document.getElementById('nameField').addEventListener('touchstart', (e) => e.stopPropagation());
 
-        function startAction() {
+        // الانتقال للسؤال الثاني بعد حفظ الاسم
+        function goToQuestionTwo() {
             const input = document.getElementById('nameField');
-            const userName = input.value.trim();
+            userName = input.value.trim();
             
             if (userName === "") {
                 alert("من فضلك اكتب اسمك أولاً لتبدأ اللعبة!");
                 return;
             }
-            
-            const screen = document.getElementById('screen');
-            const phone = document.getElementById('phone');
-            const videoOverlay = document.getElementById('videoOverlay');
-            const giftVideo = document.getElementById('giftVideo');
 
-            // إخفاء النص وصندوق الإدخال فوراً وعرض رسالة المعالجة مع الاسم
+            // عرض السؤال الثاني المحدث بكلمة (ماماك)
+            screen.innerHTML = `
+                <h2>${userName} اسكو ماماك تعرف طيب ?</h2>
+                <div class="btn-container">
+                    <button class="game-btn" onclick="startCinematicTransition()">Ouii hiya la meilleure</button>
+                    <button class="game-btn" onclick="startCinematicTransition()">chwya</button>
+                </div>
+            `;
+        }
+
+        // الهزة الدرامية والانتقال للفيديو المباشر
+        function startCinematicTransition() {
             screen.innerHTML = `<h2>جاري تحميل المفاجأة الكبرى يا ${userName}...</h2>`;
-            
-            // تشغيل الاهتزاز السينمائي المثير
             phone.classList.add('shaking');
             
-            // الانتقال المباشر للفيديو بكامل الشاشة بعد ثانيتين
             setTimeout(() => {
                 phone.classList.remove('shaking');
                 videoOverlay.style.display = 'flex';
