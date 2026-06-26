@@ -183,12 +183,23 @@
                 return;
             }
 
-            // عرض السؤال الثاني المحدث بكلمة (ماماك)
+            // عرض السؤال الثاني
             screen.innerHTML = `
                 <h2>${userName} اسكو ماماك تعرف طيب ?</h2>
                 <div class="btn-container">
-                    <button class="game-btn" onclick="startCinematicTransition()">Ouii hiya la meilleure</button>
-                    <button class="game-btn" onclick="startCinematicTransition()">chwya</button>
+                    <button class="game-btn" onclick="goToQuestionThree()">Ouii hiya la meilleure</button>
+                    <button class="game-btn" onclick="goToQuestionThree()">chwya</button>
+                </div>
+            `;
+        }
+
+        // عرض السؤال الثالث والأخير
+        function goToQuestionThree() {
+            screen.innerHTML = `
+                <h2>صحا و الطيب يعرف ماماك ! غير نضحك معاك هههه 😂</h2>
+                <div class="btn-container">
+                    <button class="game-btn" onclick="startCinematicTransition()">ro7 9awed</button>
+                    <button class="game-btn" onclick="startCinematicTransition()">la nrml nta khouya</button>
                 </div>
             `;
         }
