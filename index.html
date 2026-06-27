@@ -63,9 +63,9 @@
             line-height: 1.4;
         }
 
-        /* تنسيق الميم الكوميدي ليكون بحجم متناسق داخل الشاشة الصغرى */
+        /* تنسيق الميمز ليكون بحجم متناسق داخل الشاشة الصغرى */
         .meme-img {
-            width: 110px;
+            width: 120px;
             height: auto;
             border: 2px solid #000;
             border-radius: 6px;
@@ -207,13 +207,24 @@
             screen.innerHTML = `
                 <h2>صحا و الطيب يعرف ماماك ! غير نضحك معاك هههه 😂</h2>
                 <div class="btn-container">
-                    <button class="game-btn" onclick="startCinematicTransition()">ro7 9awed</button>
+                    <button class="game-btn" onclick="handle9awedCondition()">ro7 9awed</button>
                     <button class="game-btn" onclick="handleKhouyaCondition()">la nrml nta khouya</button>
                 </div>
             `;
         }
 
-        // تفعيل شرط اختيار "la nrml nta khouya" وعرض رسالة العتاب مع الميم وزر التالي
+        // تفعيل شرط اختيار "ro7 9awed" وعرض صفحة الميم الضاحك الجديد مع زر التالي لليمين
+        function handle9awedCondition() {
+            screen.innerHTML = `
+                <h2>7chithalek hhhh ! meme ana w d7akt 😂😂😂</h2>
+                <img src="image_46b441.jpg" class="meme-img" alt="Meme">
+                <div class="btn-container">
+                    <button class="game-btn" onclick="startCinematicTransition()">التالي ➡️</button>
+                </div>
+            `;
+        }
+
+        // تفعيل شرط اختيار "la nrml nta khouya" وعرض رسالة العتاب مع الميم وزر التالي لليسار
         function handleKhouyaCondition() {
             screen.innerHTML = `
                 <h2>la nrml ana khouk ! sema khdmtlk site bach mnb3d tgoulili nta khouya hhhhh</h2>
