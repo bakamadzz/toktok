@@ -51,19 +51,28 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 15px;
+            padding: 10px;
             color: #000;
             z-index: 2;
         }
 
         h2 {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
+            font-size: 1.25rem;
+            margin-bottom: 18px;
             font-weight: bold;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
-        /* إطار كتابة الاسم: شفاف، أسود من الحدود والكتابة */
+        /* تنسيق الميم الكوميدي ليكون بحجم متناسق داخل الشاشة الصغرى */
+        .meme-img {
+            width: 110px;
+            height: auto;
+            border: 2px solid #000;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        /* إطار كتابة الاسم */
         .name-input {
             width: 90%;
             max-width: 280px;
@@ -148,6 +157,7 @@
 
     <div class="phone-container" id="phone">
         <div class="screen-content" id="screen">
+            <!-- الخطوة الأولى: طلب إدخال الاسم -->
             <h2>اكتبي اسمك لي مديتهلك . بسكو هاد السيت درتهلك ليك!</h2>
             <input type="text" id="nameField" class="name-input" placeholder="اكتب هنا..." autocomplete="off">
             <div class="btn-container">
@@ -170,10 +180,10 @@
         const videoOverlay = document.getElementById('videoOverlay');
         const giftVideo = document.getElementById('giftVideo');
 
-        // منع تداخل حركات اللمس مع صندوق الكتابة
+        // منع تداخل اللمس مع حقل المدخلات
         document.getElementById('nameField').addEventListener('touchstart', (e) => e.stopPropagation());
 
-        // الانتقال للسؤال الثاني بعد حفظ الاسم
+        // الانتقال للسؤال الثاني
         function goToQuestionTwo() {
             const input = document.getElementById('nameField');
             userName = input.value.trim();
@@ -183,7 +193,6 @@
                 return;
             }
 
-            // عرض السؤال الثاني
             screen.innerHTML = `
                 <h2>${userName} اسكو ماماك تعرف طيب ?</h2>
                 <div class="btn-container">
@@ -199,12 +208,23 @@
                 <h2>صحا و الطيب يعرف ماماك ! غير نضحك معاك هههه 😂</h2>
                 <div class="btn-container">
                     <button class="game-btn" onclick="startCinematicTransition()">ro7 9awed</button>
-                    <button class="game-btn" onclick="startCinematicTransition()">la nrml nta khouya</button>
+                    <button class="game-btn" onclick="handleKhouyaCondition()">la nrml nta khouya</button>
                 </div>
             `;
         }
 
-        // الهزة الدرامية والانتقال للفيديو المباشر
+        // تفعيل شرط اختيار "la nrml nta khouya" وعرض رسالة العتاب مع الميم وزر التالي
+        function handleKhouyaCondition() {
+            screen.innerHTML = `
+                <h2>la nrml ana khouk ! sema khdmtlk site bach mnb3d tgoulili nta khouya hhhhh</h2>
+                <img src="0a05188911ce3f9068b52a2ac2d3ee39.jpg" class="meme-img" alt="Meme">
+                <div class="btn-container">
+                    <button class="game-btn" onclick="startCinematicTransition()">التالي ⬅️</button>
+                </div>
+            `;
+        }
+
+        // الهزة الدرامية المباشرة والانتقال للفيديو السينمائي
         function startCinematicTransition() {
             screen.innerHTML = `<h2>جاري تحميل المفاجأة الكبرى يا ${userName}...</h2>`;
             phone.classList.add('shaking');
@@ -213,7 +233,7 @@
                 phone.classList.remove('shaking');
                 videoOverlay.style.display = 'flex';
                 giftVideo.play().catch(error => {
-                    console.log("التشغيل التلقائي يبدأ فوراً بعد ضغط الزر.");
+                    console.log("التشغيل التلقائي يبدأ فوراً.");
                 });
             }, 2000);
         }
